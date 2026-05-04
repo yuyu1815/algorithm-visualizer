@@ -13,4 +13,8 @@ const result = spawnSync(
 
 if (result.error) throw result.error;
 
+if (result.signal) {
+  process.exit(1);
+}
+
 process.exit(result.status);
