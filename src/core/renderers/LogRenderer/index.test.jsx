@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { vi } from 'vitest';
 import LogRenderer from './index';
+import styles from './LogRenderer.module.scss';
 
-jest.mock('components', () => {
-  const React = require('react');
+vi.mock('components', async () => {
+  const React = (await import('react')).default;
 
   return {
     Ellipsis: ({ className, children }) => React.createElement('div', { className }, children),
@@ -32,7 +34,7 @@ describe('LogRenderer', () => {
       ReactDOM.render(<LogRenderer title="Console" data={{ log }} />, container);
     });
 
-    const content = container.querySelector('.content');
+    const content = container.querySelector(`.${styles.content}`);
     expect(content.textContent).toBe(log);
     expect(content.querySelector('img')).toBeNull();
   });
