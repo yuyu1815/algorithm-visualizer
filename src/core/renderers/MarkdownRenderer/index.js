@@ -9,15 +9,15 @@ class MarkdownRenderer extends Renderer {
 
     const heading = ({ level, children, ...rest }) => {
       const HeadingComponent = [
-        props => <h1 {...props} />,
-        props => <h2 {...props} />,
-        props => <h3 {...props} />,
-        props => <h4 {...props} />,
-        props => <h5 {...props} />,
-        props => <h6 {...props} />,
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
       ][level - 1];
 
-      const idfy = text => text.toLowerCase().trim().replace(/[^\w \-]/g, '').replace(/ /g, '-');
+      const idfy = text => text.toLowerCase().trim().replace(/[^\w -]/g, '').replace(/ /g, '-');
 
       const getText = children => {
         return React.Children.map(children, child => {
@@ -30,22 +30,18 @@ class MarkdownRenderer extends Renderer {
 
       const id = idfy(getText(children));
 
-      return (
-        <HeadingComponent id={id} {...rest}>
-          {children}
-        </HeadingComponent>
-      );
+      return React.createElement(HeadingComponent, { id, ...rest }, children);
     };
 
-    const link = ({ href, ...rest }) => {
+    const link = ({ href, children, ...rest }) => {
       return /^#/.test(href) ? (
-        <a href={href} {...rest} />
+        <a href={href} {...rest}>{children}</a>
       ) : (
-        <a href={href} rel="noopener" target="_blank" {...rest} />
+        <a href={href} rel="noopener noreferrer" target="_blank" {...rest}>{children}</a>
       );
     };
 
-    const image = ({ src, ...rest }) => {
+    const image = ({ src, alt = '', ...rest }) => {
       let newSrc = src;
       let style = { maxWidth: '100%' };
       const CODECOGS = 'https://latex.codecogs.com/svg.latex?';
@@ -59,7 +55,7 @@ class MarkdownRenderer extends Renderer {
       } else if (src.startsWith(WIKIMEDIA_MATH)) {
         style.filter = 'invert(100%)';
       }
-      return <img src={newSrc} style={style} {...rest} />;
+      return <img src={newSrc} alt={alt} style={style} {...rest} />;
     };
 
     return (
@@ -72,4 +68,3 @@ class MarkdownRenderer extends Renderer {
 }
 
 export default MarkdownRenderer;
-
