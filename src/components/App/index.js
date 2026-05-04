@@ -64,12 +64,12 @@ class App extends BaseComponent {
     this.toggleHistoryBlock(false);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { params } = nextProps.match;
-    const { search } = nextProps.location;
-    if (params !== this.props.match.params || search !== this.props.location.search) {
+  componentDidUpdate(prevProps) {
+    const { params } = this.props.match;
+    const { search } = this.props.location;
+    if (params !== prevProps.match.params || search !== prevProps.location.search) {
       const { categoryKey, algorithmKey, gistId } = params;
-      const { algorithm, scratchPaper } = nextProps.current;
+      const { algorithm, scratchPaper } = this.props.current;
       if (algorithm && algorithm.categoryKey === categoryKey && algorithm.algorithmKey === algorithmKey) return;
       if (scratchPaper && scratchPaper.gistId === gistId) return;
       this.loadAlgorithm(params, queryString.parse(search));

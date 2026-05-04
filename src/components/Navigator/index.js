@@ -29,9 +29,9 @@ class Navigator extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { algorithm } = nextProps.current;
-    if (algorithm) {
+  componentDidUpdate(prevProps) {
+    const { algorithm } = this.props.current;
+    if (algorithm && this.props.current !== prevProps.current) {
       this.toggleCategory(algorithm.categoryKey, true);
     }
   }

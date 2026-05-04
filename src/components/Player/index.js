@@ -34,9 +34,9 @@ class Player extends BaseComponent {
     if (shouldBuild) this.build(editingFile);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { editingFile, shouldBuild } = nextProps.current;
-    if (editingFile !== this.props.current.editingFile) {
+  componentDidUpdate(prevProps) {
+    const { editingFile, shouldBuild } = this.props.current;
+    if (editingFile !== prevProps.current.editingFile) {
       if (shouldBuild) this.build(editingFile);
     }
   }
