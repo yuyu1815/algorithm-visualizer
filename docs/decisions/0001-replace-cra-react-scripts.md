@@ -10,7 +10,7 @@ The app currently builds through `react-scripts@3.0.1`, wrapped by
 `scripts/react-scripts.js` so current Node versions can pass
 `--openssl-legacy-provider` when needed. The lockfile keeps the build stack on
 Webpack 4, Jest 24, Babel loader 8, Workbox 4, and a patched Sass path
-(`sass@1.77.8` plus `sass-loader@10.5.2`). The app is otherwise a client-only
+(`sass@1.99.0` plus `sass-loader@10.5.2`). The app is otherwise a client-only
 React 16.8 SPA with React Router v5, Redux, SCSS modules, root-relative imports
 from `src`, and backend API calls rooted at `/api`.
 
