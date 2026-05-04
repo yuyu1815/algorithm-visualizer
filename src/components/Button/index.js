@@ -75,12 +75,14 @@ class Button extends React.Component {
       ...rest,
     };
 
+    const { children: content, ...elementProps } = props;
+
     return to ? (
-      <Link {...props} />
+      <Link {...elementProps}>{content}</Link>
     ) : href ? (
-      <a rel="noopener" target="_blank" {...props} />
+      <a rel="noopener" target="_blank" {...elementProps}>{content}</a>
     ) : (
-      <div {...props} />
+      <div {...elementProps}>{content}</div>
     );
   }
 }

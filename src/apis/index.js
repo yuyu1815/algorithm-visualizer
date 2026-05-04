@@ -33,13 +33,6 @@ const POST = URL => {
   });
 };
 
-const PUT = URL => {
-  return request(URL, (mappedURL, args) => {
-    const [body, params, cancelToken] = args;
-    return axios.put(mappedURL, body, { params, cancelToken });
-  });
-};
-
 const PATCH = URL => {
   return request(URL, (mappedURL, args) => {
     const [body, params, cancelToken] = args;
