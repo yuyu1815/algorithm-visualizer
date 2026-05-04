@@ -1,4 +1,4 @@
-@import "~common/stylesheet/index";
+@use "~common/stylesheet/index" as *;
 
 .visualization_viewer {
   flex: 1;
