@@ -1,0 +1,48 @@
+{
+  "app": {
+    "description": "Algorithm Visualizer は、コードからアルゴリズムを可視化するインタラクティブなオンラインプラットフォームです。",
+    "discardChanges": "変更を破棄してもよろしいですか？",
+    "unsavedPrefix": "(未保存) "
+  },
+  "titles": {
+    "algorithmVisualizer": "Algorithm Visualizer",
+    "scratchPaper": "スクラッチペーパー",
+    "untitled": "無題"
+  },
+  "common": {
+    "clickToConfirm": "クリックして確認"
+  },
+  "header": {
+    "save": "保存",
+    "fork": "フォーク",
+    "delete": "削除",
+    "share": "共有",
+    "fullscreen": "全画面",
+    "signOut": "サインアウト",
+    "signIn": "サインイン"
+  },
+  "navigator": {
+    "search": "検索",
+    "searchPlaceholder": "検索 ...",
+    "new": "新規 ...",
+    "apiReference": "API リファレンス",
+    "forkMeOnGitHub": "GitHub でフォーク"
+  },
+  "player": {
+    "build": "ビルド",
+    "building": "ビルド中",
+    "pause": "一時停止",
+    "play": "再生",
+    "speed": "速度"
+  },
+  "codeEditor": {
+    "contributedBy": "投稿者",
+    "guest": "ゲスト",
+    "deleteFile": "ファイルを削除"
+  },
+  "errors": {
+    "algorithmNotFound": "アルゴリズムが見つかりません",
+    "languageNotSupported": "この言語はサポートされていません",
+    "signInRequired": "サインインが必要です"
+  }
+}

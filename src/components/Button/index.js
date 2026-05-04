@@ -26,14 +26,14 @@ class Button extends React.Component {
   }
 
   render() {
-    let { className, children, to, href, onClick, icon, reverse, selected, disabled, primary, active, confirmNeeded, inProgress, ...rest } = this.props;
+    let { className, children, to, href, onClick, icon, reverse, selected, disabled, primary, active, confirmNeeded, confirmText, inProgress, ...rest } = this.props;
     const { confirming } = this.state;
 
     if (confirmNeeded) {
       if (confirming) {
         className = classes(styles.confirming, className);
         icon = faExclamationCircle;
-        children = <Ellipsis key="text">Click to Confirm</Ellipsis>;
+        children = <Ellipsis key="text">{confirmText || 'Click to Confirm'}</Ellipsis>;
         const onClickOriginal = onClick;
         onClick = () => {
           if (onClickOriginal) onClickOriginal();
@@ -86,4 +86,3 @@ class Button extends React.Component {
 }
 
 export default Button;
-

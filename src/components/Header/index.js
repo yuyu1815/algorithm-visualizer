@@ -14,11 +14,13 @@ import faGithub from '@fortawesome/fontawesome-free-brands/faGithub';
 import faTrashAlt from '@fortawesome/fontawesome-free-solid/faTrashAlt';
 import faSave from '@fortawesome/fontawesome-free-solid/faSave';
 import faFacebook from '@fortawesome/fontawesome-free-brands/faFacebook';
+import faGlobe from '@fortawesome/fontawesome-free-solid/faGlobe';
 import faStar from '@fortawesome/fontawesome-free-solid/faStar';
 import { GitHubApi } from 'apis';
 import { classes, refineGist } from 'common/util';
 import { actions } from 'reducers';
 import { languages } from 'common/config';
+import { supportedLocales, translate, translateTitle } from 'i18n';
 import { BaseComponent, Button, Ellipsis, ListItem, Player } from 'components';
 import styles from './Header.module.scss';
 
@@ -59,7 +61,7 @@ class Header extends BaseComponent {
       content: 'https://algorithm-visualizer.org/',
     };
     const save = gist => {
-      if (!user) return Promise.reject(new Error('Sign In Required'));
+      if (!user) return Promise.reject(new Error(translate(this.props.env.locale, 'errors.signInRequired')));
       if (scratchPaper && scratchPaper.login) {
         if (scratchPaper.login === user.login) {
           return GitHubApi.editGist(scratchPaper.gistId, gist);
@@ -111,7 +113,9 @@ class Header extends BaseComponent {
   render() {
     const { className, onClickTitleBar, navigatorOpened } = this.props;
     const { scratchPaper, titles, saved } = this.props.current;
-    const { ext, user } = this.props.env;
+    const { ext, locale, user } = this.props.env;
+    const currentLocale = supportedLocales.find(supportedLocale => supportedLocale.code === locale) || supportedLocales[0];
+    const t = (key, values) => translate(locale, key, values);
 
     const permitted = this.hasPermission();
 
@@ -123,9 +127,10 @@ class Header extends BaseComponent {
               {
                 titles.map((title, i) => [
                   scratchPaper && i === 1 ?
-                    <AutosizeInput className={styles.input_title} key={`title-${i}`} value={title}
+                    <AutosizeInput className={styles.input_title} key={`title-${i}`}
+                                   value={translateTitle(locale, title)}
                                    onClick={e => e.stopPropagation()} onChange={e => this.handleChangeTitle(e)}/> :
-                    <Ellipsis key={`title-${i}`}>{title}</Ellipsis>,
+                    <Ellipsis key={`title-${i}`}>{translateTitle(locale, title)}</Ellipsis>,
                   i < titles.length - 1 &&
                   <FontAwesomeIcon className={styles.nav_arrow} fixedWidth icon={faAngleRight} key={`arrow-${i}`}/>,
                 ])
@@ -136,15 +141,16 @@ class Header extends BaseComponent {
           </div>
           <div className={styles.section}>
             <Button icon={permitted ? faSave : faCodeBranch} primary disabled={permitted && saved}
-                    onClick={() => this.saveGist()}>{permitted ? 'Save' : 'Fork'}</Button>
+                    onClick={() => this.saveGist()}>{permitted ? t('header.save') : t('header.fork')}</Button>
             {
               permitted &&
-              <Button icon={faTrashAlt} primary onClick={() => this.deleteGist()} confirmNeeded>Delete</Button>
+              <Button icon={faTrashAlt} primary onClick={() => this.deleteGist()} confirmNeeded
+                      confirmText={t('common.clickToConfirm')}>{t('header.delete')}</Button>
             }
             <Button icon={faFacebook} primary
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}>Share</Button>
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}>{t('header.share')}</Button>
             <Button icon={faExpandArrowsAlt} primary
-                    onClick={() => this.handleClickFullScreen()}>Fullscreen</Button>
+                    onClick={() => this.handleClickFullScreen()}>{t('header.fullscreen')}</Button>
           </div>
         </div>
         <div className={styles.row}>
@@ -154,13 +160,24 @@ class Header extends BaseComponent {
                 <Button className={styles.btn_dropdown} icon={user.avatar_url}>
                   {user.login}
                   <div className={styles.dropdown}>
-                    <ListItem label="Sign Out" href="/api/auth/destroy" rel="opener"/>
+                    <ListItem label={t('header.signOut')} href="/api/auth/destroy" rel="opener"/>
                   </div>
                 </Button> :
                 <Button icon={faGithub} primary href="/api/auth/request" rel="opener">
-                  <Ellipsis>Sign In</Ellipsis>
+                  <Ellipsis>{t('header.signIn')}</Ellipsis>
                 </Button>
             }
+            <Button className={styles.btn_dropdown} icon={faGlobe}>
+              {currentLocale.name}
+              <div className={styles.dropdown}>
+                {
+                  supportedLocales.map(supportedLocale => supportedLocale.code === locale ? null : (
+                    <ListItem key={supportedLocale.code} onClick={() => this.props.setLocale(supportedLocale.code)}
+                              label={supportedLocale.name}/>
+                  ))
+                }
+              </div>
+            </Button>
             <Button className={styles.btn_dropdown} icon={faStar}>
               {languages.find(language => language.ext === ext).name}
               <div className={styles.dropdown}>
@@ -185,4 +202,3 @@ export default withRouter(
     Header,
   ),
 );
-
