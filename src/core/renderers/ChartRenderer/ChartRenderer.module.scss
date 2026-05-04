@@ -1,1 +1,7 @@
-@use "~common/stylesheet/index" as *;
+@use "common/stylesheet/index" as *;
+
+:export {
+  colorFont: $color-font;
+  colorSelected: $color-selected;
+  colorPatched: $color-patched;
+}
