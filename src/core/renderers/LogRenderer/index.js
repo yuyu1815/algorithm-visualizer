@@ -20,11 +20,10 @@ class LogRenderer extends Renderer {
 
     return (
       <div className={styles.log} ref={this.elementRef}>
-        <div className={styles.content} dangerouslySetInnerHTML={{ __html: log }} />
+        <div className={styles.content}>{log}</div>
       </div>
     );
   }
 }
 
 export default LogRenderer;
-
