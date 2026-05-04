@@ -4,10 +4,12 @@ const nodeMajorVersion = Number(process.versions.node.split('.')[0]);
 const nodeOptions = nodeMajorVersion >= 17 ? ['--openssl-legacy-provider'] : [];
 const [script, ...args] = process.argv.slice(2);
 const scriptPath = require.resolve(`react-scripts/scripts/${script}`);
+const sassLoaderHookPath = require.resolve('./sass-modern-loader-hook');
+const scriptOptions = script === 'eject' ? [] : ['--require', sassLoaderHookPath];
 
 const result = spawnSync(
   process.execPath,
-  [...nodeOptions, scriptPath, ...args],
+  [...nodeOptions, ...scriptOptions, scriptPath, ...args],
   { stdio: 'inherit' },
 );
 
