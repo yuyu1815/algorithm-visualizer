@@ -8,6 +8,7 @@ import faGithub from '@fortawesome/fontawesome-free-brands/faGithub';
 import { ExpandableListItem, ListItem } from 'components';
 import { classes } from 'common/util';
 import { actions } from 'reducers';
+import { translate, translateTitle } from 'i18n';
 import styles from './Navigator.module.scss';
 
 class Navigator extends React.Component {
@@ -73,6 +74,8 @@ class Navigator extends React.Component {
     const { className } = this.props;
     const { categories, scratchPapers } = this.props.directory;
     const { algorithm, scratchPaper } = this.props.current;
+    const { locale } = this.props.env;
+    const t = (key, values) => translate(locale, key, values);
 
     const categoryKey = algorithm && algorithm.categoryKey;
     const algorithmKey = algorithm && algorithm.algorithmKey;
@@ -82,7 +85,8 @@ class Navigator extends React.Component {
       <nav className={classes(styles.navigator, className)}>
         <div className={styles.search_bar_container}>
           <FontAwesomeIcon fixedWidth icon={faSearch} className={styles.search_icon}/>
-          <input type="text" className={styles.search_bar} aria-label="Search" placeholder="Search ..." autoFocus
+          <input type="text" className={styles.search_bar} aria-label={t('navigator.search')}
+                 placeholder={t('navigator.searchPlaceholder')} autoFocus
                  value={query} onChange={e => this.handleChangeQuery(e)}/>
         </div>
         <div className={styles.algorithm_list}>
@@ -111,9 +115,10 @@ class Navigator extends React.Component {
           }
         </div>
         <div className={styles.footer}>
-          <ExpandableListItem icon={faCode} label="Scratch Paper" onClick={() => this.toggleScratchPaper()}
+          <ExpandableListItem icon={faCode} label={translateTitle(locale, 'Scratch Paper')}
+                              onClick={() => this.toggleScratchPaper()}
                               opened={scratchPaperOpened}>
-            <ListItem indent label="New ..." to="/scratch-paper/new"/>
+            <ListItem indent label={t('navigator.new')} to="/scratch-paper/new"/>
             {
               scratchPapers.map(scratchPaper => (
                 <ListItem indent key={scratchPaper.key} selected={scratchPaper.key === gistId}
@@ -121,9 +126,9 @@ class Navigator extends React.Component {
               ))
             }
           </ExpandableListItem>
-          <ListItem icon={faBook} label="API Reference"
+          <ListItem icon={faBook} label={t('navigator.apiReference')}
                     href="https://github.com/algorithm-visualizer/algorithm-visualizer/wiki"/>
-          <ListItem icon={faGithub} label="Fork me on GitHub"
+          <ListItem icon={faGithub} label={t('navigator.forkMeOnGitHub')}
                     href="https://github.com/algorithm-visualizer/algorithm-visualizer"/>
         </div>
       </nav>

@@ -1,0 +1,48 @@
+{
+  "app": {
+    "description": "Algorithm Visualizer is an interactive online platform that visualizes algorithms from code.",
+    "discardChanges": "Are you sure you want to discard changes?",
+    "unsavedPrefix": "(Unsaved) "
+  },
+  "titles": {
+    "algorithmVisualizer": "Algorithm Visualizer",
+    "scratchPaper": "Scratch Paper",
+    "untitled": "Untitled"
+  },
+  "common": {
+    "clickToConfirm": "Click to Confirm"
+  },
+  "header": {
+    "save": "Save",
+    "fork": "Fork",
+    "delete": "Delete",
+    "share": "Share",
+    "fullscreen": "Fullscreen",
+    "signOut": "Sign Out",
+    "signIn": "Sign In"
+  },
+  "navigator": {
+    "search": "Search",
+    "searchPlaceholder": "Search ...",
+    "new": "New ...",
+    "apiReference": "API Reference",
+    "forkMeOnGitHub": "Fork me on GitHub"
+  },
+  "player": {
+    "build": "Build",
+    "building": "Building",
+    "pause": "Pause",
+    "play": "Play",
+    "speed": "Speed"
+  },
+  "codeEditor": {
+    "contributedBy": "Contributed by",
+    "guest": "guest",
+    "deleteFile": "Delete File"
+  },
+  "errors": {
+    "algorithmNotFound": "Algorithm Not Found",
+    "languageNotSupported": "Language Not Supported",
+    "signInRequired": "Sign In Required"
+  }
+}

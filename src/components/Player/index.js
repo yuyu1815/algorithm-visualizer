@@ -11,6 +11,7 @@ import { classes, extension } from 'common/util';
 import { TracerApi } from 'apis';
 import { actions } from 'reducers';
 import { BaseComponent, Button, ProgressBar } from 'components';
+import { translate } from 'i18n';
 import styles from './Player.module.scss';
 
 class Player extends BaseComponent {
@@ -90,7 +91,7 @@ class Player extends BaseComponent {
         });
     } else {
       this.setState({ building: false });
-      this.handleError(new Error('Language Not Supported'));
+      this.handleError(new Error(translate(this.props.env.locale, 'errors.languageNotSupported')));
     }
   }
 
@@ -146,20 +147,22 @@ class Player extends BaseComponent {
   render() {
     const { className } = this.props;
     const { editingFile } = this.props.current;
+    const { locale } = this.props.env;
     const { chunks, cursor } = this.props.player;
     const { speed, playing, building } = this.state;
+    const t = (key, values) => translate(locale, key, values);
 
     return (
       <div className={classes(styles.player, className)}>
         <Button icon={faWrench} primary disabled={building} inProgress={building}
                 onClick={() => this.build(editingFile)}>
-          {building ? 'Building' : 'Build'}
+          {building ? t('player.building') : t('player.build')}
         </Button>
         {
           playing ? (
-            <Button icon={faPause} primary active onClick={() => this.pause()}>Pause</Button>
+            <Button icon={faPause} primary active onClick={() => this.pause()}>{t('player.pause')}</Button>
           ) : (
-            <Button icon={faPlay} primary onClick={() => this.resume(true)}>Play</Button>
+            <Button icon={faPlay} primary onClick={() => this.resume(true)}>{t('player.play')}</Button>
           )
         }
         <Button icon={faChevronLeft} primary disabled={!this.isValidCursor(cursor - 1)} onClick={() => this.prev()}/>
@@ -168,7 +171,7 @@ class Player extends BaseComponent {
         <Button icon={faChevronRight} reverse primary disabled={!this.isValidCursor(cursor + 1)}
                 onClick={() => this.next()}/>
         <div className={styles.speed}>
-          Speed
+          {t('player.speed')}
           <InputRange
             classNames={{
               inputRange: styles.range,
@@ -183,6 +186,6 @@ class Player extends BaseComponent {
   }
 }
 
-export default connect(({ current, player }) => ({ current, player }), actions)(
+export default connect(({ current, env, player }) => ({ current, env, player }), actions)(
   Player,
 );

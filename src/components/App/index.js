@@ -19,6 +19,7 @@ import { actions } from 'reducers';
 import { createUserFile, extension, refineGist } from 'common/util';
 import { exts, languages } from 'common/config';
 import { SCRATCH_PAPER_README_MD } from 'files';
+import { translate, translateDescription, translateTitle } from 'i18n';
 import styles from './App.module.scss';
 
 class App extends BaseComponent {
@@ -77,15 +78,14 @@ class App extends BaseComponent {
 
   toggleHistoryBlock(enable = !this.unblock) {
     if (enable) {
-      const warningMessage = 'Are you sure you want to discard changes?';
       window.onbeforeunload = () => {
         const { saved } = this.props.current;
-        if (!saved) return warningMessage;
+        if (!saved) return translate(this.props.env.locale, 'app.discardChanges');
       };
       this.unblock = this.props.history.block((location) => {
         if (location.pathname === this.props.location.pathname) return;
         const { saved } = this.props.current;
-        if (!saved) return warningMessage;
+        if (!saved) return translate(this.props.env.locale, 'app.discardChanges');
       });
     } else {
       window.onbeforeunload = undefined;
@@ -152,7 +152,7 @@ class App extends BaseComponent {
         delete window.__PRELOADED_ALGORITHM__;
       } else if (window.__PRELOADED_ALGORITHM__ === null) {
         delete window.__PRELOADED_ALGORITHM__;
-        return Promise.reject(new Error('Algorithm Not Found'));
+        return Promise.reject(new Error(translate(this.props.env.locale, 'errors.algorithmNotFound')));
       } else if (categoryKey && algorithmKey) {
         return AlgorithmApi.getAlgorithm(categoryKey, algorithmKey)
           .then(({ algorithm }) => this.props.setAlgorithm(algorithm));
@@ -222,15 +222,18 @@ class App extends BaseComponent {
   render() {
     const { workspaceVisibles, workspaceWeights } = this.state;
     const { titles, description, saved } = this.props.current;
+    const { locale } = this.props.env;
 
-    const title = `${saved ? '' : '(Unsaved) '}${titles.join(' - ')}`;
+    const localizedTitles = titles.map(title => translateTitle(locale, title));
+    const title = `${saved ? '' : translate(locale, 'app.unsavedPrefix')}${localizedTitles.join(' - ')}`;
+    const localizedDescription = translateDescription(locale, description);
     const [navigatorOpened] = workspaceVisibles;
 
     return (
       <div className={styles.app}>
-        <Helmet>
+        <Helmet htmlAttributes={{ lang: locale }}>
           <title>{title}</title>
-          <meta name="description" content={description}/>
+          <meta name="description" content={localizedDescription}/>
         </Helmet>
         <Header className={styles.header} onClickTitleBar={this.handleClickTitleBar}
                 navigatorOpened={navigatorOpened} loadScratchPapers={this.loadScratchPapers}
