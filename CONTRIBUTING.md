@@ -26,7 +26,7 @@ Are you a first-timer in contributing to open source? [These guidelines](https:/
         + "proxy": "https://algorithm-visualizer.org",
         ```
 
-4. Install dependencies, and run the web app.
+4. Install dependencies, and run the web app. Use Node.js 14.0.0 or newer, matching the `engines.node` policy in `package.json`.
 
     ```bash
     cd algorithm-visualizer
